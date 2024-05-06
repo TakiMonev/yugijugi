@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>여기저기</title>
+    <!-- axios 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- jQuery 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 부트스트랩 JavaScript 추가 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Slick 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8;
+        padding: 10px 20px;
+      }
+
+      .logo a {
+        color: black;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      .logo a:hover,
+      logo a:visited,
+      logo a:active,
+      logo a:focus {
+        color: black;
+        text-decoration: none;
+      }
+
+      .menu {
+        display: flex;
+        gap: 15px;
+      }
+
+      .menu-item {
+        color: black;
+        font-size: 18px;
+      }
+
+      .menu-icon {
+        display: none;
+      }
+
+      .post_center {
+        padding-top: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .input_area {
+        width: 40%;
+        padding: 16px;
+      }
+
+      .small_content_box {
+        width: 100%;
+        padding: 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .content_box {
+        width: 100%;
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .selector_box {
+        margin-top: 10px;
+      }
+
+      .write_box {
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .submit_box {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: 16px;
+      }
+
+      .input-form {
+        width: calc(50% - 5px);
+      }
+
+      .input-form label {
+        margin-bottom: 5px;
+      }
+    </style>
+    <!-- Font Awesome 아이콘 라이브러리 추가 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo"><a href="/">여기저기</a></div>
+      <nav class="menu">
+        <a href="#" class="menu-item">로그인</a>
+      </nav>
+    </header>
+    <form id="myForm" class="post_center">
+      <input
+        type="hidden"
+        id="facility_id"
+        name="facility_id"
+        style="display: none"
+        th:value="${facility_id}"
+      />
+      <div class="input_area">
+        <h3>게시글</h3>
+        <div class="small_content_box">
+          <div class="input-form">
+            <label for="title">제목</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              placeholder=""
+              th:value="${title_value}"
+              required
+            />
+          </div>
+          <div class="input-form">
+            <label for="password">비밀번호</label>
+            <input
+              type="text"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder=""
+              required
+            />
+          </div>
+        </div>
+        <div class="content_box">
+          <div class="selector_box">
+            <label for="location">지역을 선택하세요</label>
+            <select
+              id="location"
+              class="form-select"
+              name="location"
+              th:value="${location_value}"
+            >
+              <option value="" disabled selected>지역을 선택하세요</option>
+              <option value="서울">서울</option>
+              <option value="경기">경기</option>
+              <option value="충청">충청</option>
+              <option value="강원">강원</option>
+              <option value="경북">경북</option>
+              <option value="경남">경남</option>
+              <option value="전북">전북</option>
+              <option value="전남">전남</option>
+            </select>
+          </div>
+        </div>
+        <div class="content_box">
+          <div class="selector_box">
+            <label for="theme">테마를 선택하세요</label>
+            <select
+              id="theme"
+              class="form-select"
+              name="theme"
+              th:value="${theme_value}"
+            >
+              <option value="" disabled selected>테마를 선택하세요</option>
+              <option
+                th:each="theme : ${themes}"
+                th:value="${theme.name}"
+                th:text="${theme.name}"
+              ></option>
+            </select>
+          </div>
+        </div>
+        <div class="write_box">
+          <label for="content">본문</label>
+          <textarea
+            id="content"
+            class="form-control"
+            rows="10"
+            cols="50"
+            name="content"
+            th:value="${content_value}"
+            required
+          >
+[[${content_value}]]</textarea
+          >
+        </div>
+        <div class="submit_box">
+          <button type="button" onclick="submitForm()" class="btn btn-primary">
+            제출
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- jQuery 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      async function submitForm() {
+        try {
+          var facility_id = document.getElementById("facility_id").value;
+          var password = document.getElementById("password").value;
+          var title = document.getElementById("title").value;
+          var location = document.getElementById("location").value;
+          var theme = document.getElementById("theme").value;
+          var content = document.getElementById("content").value;
+
+          if (!password || !title || !location || !theme || !content) {
+            alert("정보를 모두 입력해주세요");
+            return;
+          }
+
+          if (!facility_id) {
+            await axios.post(
+              `/post`,
+              {
+                title: title,
+                password: password,
+                location: location,
+                theme: theme,
+                content: content,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            alert("게시글이 성공적으로 작성되었습니다!");
+            window.location.href = "/";
+            return;
+          }
+
+          await axios.post(
+            `/facility/update/${facility_id}`,
+            {
+              title: title,
+              password: password,
+              location: location,
+              theme: theme,
+              content: content,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          alert("게시글이 성공적으로 수정되었습니다!");
+          window.location.href = `/facility/${facility_id}`;
+        } catch (e) {
+          console.log(e);
+          alert("비밀번호가 틀렸습니다. 다시 시도해주세요.");
+        }
+      }
+    </script>
+  </body>
+</html>

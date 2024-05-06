@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>여기저기</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8;
+        padding: 10px 20px;
+      }
+      .logo a {
+        color: black;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      .logo a:hover,
+      logo a:visited,
+      logo a:active,
+      logo a:focus {
+        color: black;
+        text-decoration: none;
+      }
+      .menu {
+        display: flex;
+        gap: 15px;
+      }
+      .menu-item {
+        color: black;
+        font-size: 18px;
+      }
+      .menu-icon {
+        display: none;
+      }
+      .card {
+        transition: all 0.1s ease-in-out;
+      }
+      .go_back {
+        display: flex;
+        text-decoration: none;
+        color: #00bfff;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        align-items: center;
+        justify-content: center;
+      }
+      .add_post {
+        display: flex;
+        margin: 20px;
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+    </style>
+    <!-- Font Awesome 아이콘 라이브러리 추가 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo"><a href="/">여기저기</a></div>
+      <nav class="menu">
+        <a href="#" class="menu-item">로그인</a>
+      </nav>
+    </header>
+    <div class="row">
+      <div class="col-md-4">
+        <h2 id="locationName" style="margin: 20px"></h2>
+      </div>
+      <div class="col-md-8">
+        <div class="add_post">
+          <button
+            onclick="location.href='/post';"
+            type="button"
+            class="btn btn-primary"
+          >
+            게시글 추가
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="go_back">
+          <a href="/">&lt; 홈으로</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <table class="table table-hover">
+          <tbody>
+            <tr
+              th:unless="${#lists.isEmpty(facilities)}"
+              th:each="facility: ${facilities}"
+              style="cursor: pointer"
+              th:onclick="|location.href='/facility/${facility.id}'|"
+            >
+              <td th:text="${facility.title}"></td>
+              <td th:text="${facility.date}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- jQuery 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // URL에서 지역 정보 추출
+        var locationName = getLocationFromURL();
+        // 지역 정보가 유효한 경우에만 HTML에 삽입
+        if (locationName !== null) {
+          $("#locationName").text("'" + locationName + "'" + "지역 검색 결과");
+        }
+        // 유효하지 않은 경우 기본값 또는 오류 메시지를 처리할 수 있음
+        else {
+          $("#locationName").text("지역 정보가 없습니다.");
+        }
+      });
+
+      // URL에서 지역 정보 추출하는 함수
+      function getLocationFromURL() {
+        var url = window.location.href;
+        var parts = url.split("/");
+        var locationName = decodeURIComponent(parts[parts.length - 1]);
+        return locationName;
+      }
+    </script>
+  </body>
+</html>

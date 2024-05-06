@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- jQuery 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap 추가 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Axios 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>여기저기</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8;
+        padding: 10px 20px;
+      }
+      .logo a {
+        color: black;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      .logo a:hover,
+      logo a:visited,
+      logo a:active,
+      logo a:focus {
+        color: black;
+        text-decoration: none;
+      }
+      .menu {
+        display: flex;
+        gap: 15px;
+      }
+      .menu-item {
+        color: black;
+        font-size: 18px;
+      }
+      .menu-icon {
+        display: none;
+      }
+      .card {
+        transition: all 0.1s ease-in-out;
+      }
+      .change_post {
+        display: flex;
+        margin: 20px;
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+      .go_back {
+        display: flex;
+        text-decoration: none;
+        color: #00bfff;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        align-items: center;
+        justify-content: center;
+      }
+      .button_margin {
+        margin-right: 10px;
+      }
+    </style>
+    <!-- Font Awesome 아이콘 라이브러리 추가 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo"><a href="/">여기저기</a></div>
+      <nav class="menu">
+        <a href="#" class="menu-item">로그인</a>
+      </nav>
+    </header>
+    <div class="row">
+      <div class="col-md-8">
+        <h2 style="margin: 20px" th:text="${name}"></h2>
+      </div>
+      <div class="col-md-4">
+        <div class="change_post">
+          <button
+            onclick="location.href='/post';"
+            type="button"
+            class="btn btn-primary button_margin"
+          >
+            게시글 추가
+          </button>
+          <button
+            type="button"
+            th:onclick="openModal()"
+            class="btn btn-danger button_margin"
+          >
+            게시판 삭제
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="go_back">
+          <a href="/">&lt; 홈으로</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <table class="table table-hover">
+          <tbody>
+            <tr
+              th:unless="${#lists.isEmpty(facilities)}"
+              th:each="facility: ${facilities}"
+              style="cursor: pointer"
+              th:onclick="|location.href='/facility/${facility.id}'|"
+            >
+              <td th:text="${facility.title}"></td>
+              <td th:text="${facility.date}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 모달 -->
+    <div
+      class="modal fade"
+      id="deletionModal"
+      tabindex="-1"
+      aria-labelledby="deletionModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deletionModalLabel">게시판 삭제</h5>
+          </div>
+          <div class="modal-body">
+            <!-- 모달 내용 -->
+            <form
+              id="deletionForm"
+              method="post"
+              th:action="|'/theme/delete/' + ${theme.get().id}|"
+            >
+              <div class="row" padding="10px">
+                <div class="col-md-12">
+                  <label for="password">비밀번호</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="closeModal()"
+                >
+                  닫기
+                </button>
+                <button
+                  id="saveButton"
+                  type="button"
+                  class="btn btn-danger"
+                  th:onclick="|deleteTheme('${theme.get().id}')|"
+                >
+                  삭제
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function openModal() {
+        $("#deletionModal").modal("show");
+      }
+
+      function closeModal() {
+        $("#deletionModal").modal("hide"); // 모달을 닫음
+      }
+
+      async function deleteTheme(theme_id) {
+        try {
+          var password = document.getElementById("password").value;
+
+          const response = await axios.post(
+            `/theme/delete/${theme_id}`,
+            { password },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          var deleteResponse = response.data;
+
+          if (deleteResponse === "삭제 성공") {
+            closeModal();
+            window.location.href = "/";
+          } else {
+            alert(deleteResponse);
+            closeModal();
+            window.location.href = "/theme/" + theme_id;
+          }
+        } catch (error) {
+          console.error(error);
+          alert("비밀번호를 잘못 입력하셨습니다.");
+          closeModal();
+          window.location.href = "/theme/" + theme_id;
+        }
+      }
+    </script>
+  </body>
+</html>

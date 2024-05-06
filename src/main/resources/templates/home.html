@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>여기저기</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <!-- axios 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- jQuery 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 부트스트랩 JavaScript 추가 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Slick 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8;
+        padding: 10px 20px;
+      }
+      .logo a {
+        color: black;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      .menu {
+        display: flex;
+        gap: 15px;
+      }
+      .menu-item {
+        color: black;
+        font-size: 18px;
+      }
+      .post-slider {
+        width: 70%;
+        margin: 0 auto;
+        position: relative;
+      }
+      .post-slider .silder-title {
+        text-align: center;
+        margin: 30px auto;
+      }
+      .post-slider .next,
+      .post-slider .prev {
+        position: absolute;
+        top: 36%;
+        font-size: 2em;
+        color: gray;
+        cursor: pointer;
+      }
+      .post-slider .next {
+        right: 30px;
+      }
+      .post-slider .prev {
+        left: 30px;
+      }
+      .post-slider .post-wrapper {
+        width: 84%;
+        height: 350px;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 10px 0;
+      }
+      .post-slider .post-wrapper .post {
+        width: 300px;
+        height: 300px;
+        margin: 0 10px;
+        display: inline-block;
+        background: white;
+        border-radius: 5px;
+      }
+      .post-slider .post-wrapper .post .post-info {
+        font-size: 15px;
+        height: 30%;
+        padding-left: 10px;
+      }
+      .post-slider .post-wrapper .post .slider-image {
+        width: 100%;
+        height: 175px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+      .theme-board {
+        margin-top: 50px; /* 여유 있는 공간 추가 */
+      }
+      .add_theme {
+        display: flex;
+        margin: 20px;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <a href="/">여기저기</a>
+      </div>
+      <nav class="menu">
+        <a href="#" class="menu-item">로그인</a>
+      </nav>
+    </header>
+
+    <div class="locations"></div>
+
+    <div class="main">
+      <div class="page-wrapper" style="position: relative">
+        <!--page slider -->
+        <div class="post-slider">
+          <h2 class="silder-title">지역별 게시판</h2>
+          <i class="fas fa-chevron-left prev"></i>
+          <i class="fas fa-chevron-right next"></i>
+          <div class="post-wrapper">
+            <div class="post">
+              <a th:href="@{/location/{location}(location='서울')}">
+                <img src="img/seoul.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>서울</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='경기')}">
+                <img src="img/gyeonggi.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>경기</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='충청')}">
+                <img src="img/chungbuk.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>충청</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='강원')}">
+                <img src="img/kangwon.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>강원</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='경북')}">
+                <img src="img/kyungbuk.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>경북</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='경남')}">
+                <img src="img/kyungnam.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>경남</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='전북')}">
+                <img src="img/chonbuk.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>전북</p>
+                </div>
+              </a>
+            </div>
+            <div class="post">
+              <a th:href="@{/location/{location}(location='전남')}">
+                <img src="img/chonnam.jpg" class="slider-image" />
+                <div class="post-info">
+                  <p>전남</p>
+                </div>
+              </a>
+            </div>
+            <!-- 나머지 포스트들 -->
+          </div>
+        </div>
+        <!--post slider-->
+      </div>
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="container mt-5 theme-board">
+            <h2 class="text-center" style="margin: 30px">테마별 게시판</h2>
+            <table class="table table-hover">
+              <tbody>
+                <tr
+                  th:unless="${#lists.isEmpty(themes)}"
+                  th:each="theme: ${themes}"
+                  style="cursor: pointer"
+                  th:onclick="|location.href='/theme/${theme.id}'|"
+                >
+                  <td th:text="${theme.name}"></td>
+                  <td th:text="${theme.description}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-2 mt-5">
+          <div class="add_theme">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#themeModal"
+              onclick="openModal()"
+            >
+              테마 추가
+            </button>
+          </div>
+        </div>
+
+        <!-- 모달 -->
+        <div
+          class="modal fade"
+          id="themeModal"
+          tabindex="-1"
+          aria-labelledby="themeModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="themeModalLabel">테마 추가</h5>
+              </div>
+              <div class="modal-body">
+                <!-- 모달 내용 -->
+                <form id="themeForm" action="/theme" method="post">
+                  <div class="row" padding="10px">
+                    <div class="col-md-6">
+                      <label for="name">테마 이름</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="ex) 테마 파크"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="password">테마 비밀번호</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="숫자 문자 모두 가능"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-12">
+                      <label for="description">테마 설명</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="description"
+                        name="description"
+                        placeholder="※ 이미 테마가 존재하는 경우 저장되지 않습니다."
+                        required
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="closeModal()"
+                >
+                  닫기
+                </button>
+                <button
+                  id="saveButton"
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="saveTheme()"
+                >
+                  저장
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".post-wrapper").slick({
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 4000,
+          nextArrow: $(".next"),
+          prevArrow: $(".prev"),
+        });
+      });
+
+      function openModal() {
+        $("#themeModal").modal("show"); // 모달을 표시
+      }
+
+      function closeModal() {
+        $("#themeModal").modal("hide"); // 모달을 닫음
+      }
+
+      function saveTheme() {
+        var name = document.getElementById("name").value;
+        var password = document.getElementById("password").value;
+        var description = document.getElementById("description").value;
+
+        if (!name || !password || !description) {
+          alert("모든 정보를 입력해주세요.");
+          return;
+        }
+
+        document.getElementById("themeForm").submit();
+        closeModal();
+      }
+
+      window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get("message");
+        if (message) {
+          alert(message);
+        }
+      };
+    </script>
+  </body>
+</html>

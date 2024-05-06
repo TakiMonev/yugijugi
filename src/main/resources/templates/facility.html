@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>여기저기</title>
+    <!-- axios 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- jQuery 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 부트스트랩 JavaScript 추가 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Slick 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8;
+        padding: 10px 20px;
+      }
+      .logo a,
+      .logo a:hover,
+      .logo a:visited,
+      .logo a:active,
+      .logo a:focus {
+        color: black;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      a:hover {
+        cursor: pointer;
+      }
+      .menu {
+        display: flex;
+        gap: 15px;
+      }
+      .menu-item {
+        color: black;
+        font-size: 18px;
+      }
+      .go_back {
+        display: flex;
+        margin: 20px;
+        text-decoration: none;
+        color: #007bff;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        align-items: center;
+        justify-content: center;
+      }
+      .update_and_delete {
+        display: flex;
+        margin: 20px;
+        text-decoration: none;
+        font-size: 18px;
+        padding: 10px 20px;
+        align-items: center;
+        justify-content: center;
+      }
+      .title_area,
+      .comment_area {
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #c0c0c0;
+        border-radius: 5px;
+      }
+      .facility_center {
+        display: flex;
+        margin: 20px;
+        padding: 30px;
+        border: 1px solid #c0c0c0;
+        border-radius: 5px;
+        min-height: 600px;
+      }
+      .comment_area {
+        position: relative;
+        align-items: center;
+        justify-content: center;
+      }
+      .comment_style {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .update_comment {
+        position: absolute;
+        top: 50%;
+        display: none;
+        right: 40%;
+        transform: translateY(-50%); // 자기 자신 50% 위로 : 질문 내용
+      }
+      .delete_comment {
+        position: absolute;
+        top: 50%;
+        display: none;
+        right: 10%;
+        transform: translateY(-50%); // 자기 자신 50% 위로 : 질문 내용
+      }
+      .comment_area:hover .update_comment {
+        display: inline;
+      }
+      .comment_area:hover .delete_comment {
+        display: inline;
+      }
+      .button_margin {
+        margin-right: 10px;
+      }
+      .updateComment,
+      #deleteComment {
+        display: inline;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo"><a href="/">여기저기</a></div>
+      <nav class="menu">
+        <a href="#" class="menu-item">로그인</a>
+      </nav>
+    </header>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="go_back">
+          <a th:onclick="|goBack('${theme.id}')|">&lt; 이전으로</a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="title_area">
+          <h3 th:text="${facility.title}"></h3>
+        </div>
+        <div class="facility_center">
+          <p th:text="${facility.content}"></p>
+        </div>
+        <div>
+          <div th:each="comment : ${comments}">
+            <div class="comment_area">
+              <div class="row">
+                <div class="col-md-1">
+                  <div
+                    th:id="'user' + ${comment.id}"
+                    th:text="${comment.userName}"
+                    class="comment_style"
+                  ></div>
+                </div>
+                <div class="col-md-8">
+                  <div th:id="'toUpdate' + ${comment.id}">
+                    <div
+                      th:id="'comment' + ${comment.id}"
+                      th:text="${comment.content}"
+                      style="display: block"
+                    ></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div th:id="'buttonContainer' + ${comment.id}">
+                    <form class="updateComment">
+                      <div class="update_comment">
+                        <button
+                          class="btn btn-primary button_margin"
+                          th:value="${comment.content}"
+                          th:onclick="|updateContent('${comment.id}', '${facility.id}', this.getAttribute('value'))|"
+                        >
+                          수정
+                        </button>
+                      </div>
+                    </form>
+                    <form
+                      id="deleteComment"
+                      method="post"
+                      th:action="@{'/comment/delete/' + ${facility.id} + '/' + ${comment.id}}"
+                    >
+                      <div class="delete_comment">
+                        <button class="btn btn-danger button_margin">
+                          삭제
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comment_area">
+          <form
+            id="addComment"
+            method="post"
+            th:action="@{'/comment/' + ${facility.id}}"
+          >
+            <div class="row">
+              <div class="col-md-1">
+                <p class="comment_style">댓글</p>
+              </div>
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="content"
+                  name="content"
+                  placeholder="댓글 달기"
+                  required
+                />
+              </div>
+              <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">댓글 추가</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="update_and_delete">
+          <button
+            th:onclick="|location.href='/facility/update/${facility.id}'|"
+            type="button"
+            class="btn btn-primary button_margin"
+          >
+            수정
+          </button>
+          <button
+            type="button"
+            th:onclick="openModal()"
+            class="btn btn-danger button_margin"
+          >
+            삭제
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 -->
+    <div
+      class="modal fade"
+      id="deletionModal"
+      tabindex="-1"
+      aria-labelledby="deletionModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deletionModalLabel">게시글 삭제</h5>
+          </div>
+          <div class="modal-body">
+            <!-- 모달 내용 -->
+            <form
+              id="deletionForm"
+              method="post"
+              th:action="@{'/facility/delete/' + ${facility.id}}"
+            >
+              <div class="row" padding="10px">
+                <div class="col-md-12">
+                  <label for="password">비밀번호</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  th:onclick="closeModal()"
+                >
+                  닫기
+                </button>
+                <button
+                  id="saveButton"
+                  type="button"
+                  class="btn btn-danger"
+                  th:onclick="|deleteTheme('${facility.id}', '${theme.id}')|"
+                >
+                  삭제
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function goBack(theme_id) {
+        window.location.href = "/theme/" + theme_id;
+      }
+
+      function openModal() {
+        $("#deletionModal").modal("show");
+      }
+
+      async function updateComplete(commentId, facilityId, content) {
+        // event.preventDefault();
+        try {
+          const response = await axios.post(
+            `/comment/update/${facilityId}/${commentId}`,
+            {
+              content: content,
+            }
+          );
+          alert(response);
+          const updatedHtml = response.data;
+          alert(response.data);
+
+          const completeContent = document.getElementById(
+            `toUpdate${commentId}`
+          );
+          completeContent.innerHTML = `
+                <div
+                    id="comment${commentId}"
+                    style="display: block"
+                >${content}</div>
+            `;
+
+          const updatedButtons = document.getElementById(
+            `buttonContainer${commentId}`
+          );
+          updatedButtons.innerHTML = `
+                <form class="updateComment">
+                    <div class="update_comment">
+                        <button 
+                            class="btn btn-primary button_margin"
+                            onclick="updateContent(${commentId}, ${facilityId}, '${content.replace(
+            /'/g,
+            "\\'"
+          )}')"
+                        >수정</button>
+                    </div>
+                </form>
+                <form id="deleteComment" method="post"
+                    action="/comment/delete/${facilityId}/${commentId}"
+                >
+                    <div class="delete_comment">
+                        <button type="submit" class="btn btn-danger button_margin">삭제</button>
+                    </div>
+                </form>
+            `;
+
+          console.log(updatedHtml);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function updateContent(commentId, facilityId, content) {
+        var updatedContent = document.getElementById(`toUpdate${commentId}`);
+        updatedContent.innerHTML = `
+            <input
+                type="text"
+                id="comment${commentId}"
+                class="form-control"
+                value="${content.replace(/"/g, "&quot;")}"
+                style="display: block"
+            />
+        `;
+
+        // 버튼 컨테이너를 업데이트합니다.
+        var updatedButtons = document.getElementById(
+          `buttonContainer${commentId}`
+        );
+        updatedButtons.innerHTML = `
+            <form class="updateComment">
+                <div>
+                    <button type="submit"
+                        class="btn btn-primary button_margin"
+                        onclick="updateComplete(${commentId}, ${facilityId}, document.getElementById('comment${commentId}').value)"
+                        // onclick 이벤트 핸들러에 필요한 인자를 제대로 전달합니다.
+                    >수정 완료</button>
+                </div>
+            </form>
+        `;
+      }
+
+      function deleteTheme(facilityId, themeId) {
+        var facility_id = facilityId;
+        var theme_id = themeId;
+        var password = document.getElementById("password").value;
+
+        axios
+          .post(`/facility/delete/${facility_id}`, { password })
+          .then(function (response) {
+            var deleteResponse = response.data;
+
+            if (deleteResponse === "삭제 성공") {
+              closeModal();
+              window.location.href = "/theme/" + theme_id;
+            } else {
+              alert(deleteResponse);
+              closeModal();
+              window.location.href = "/facility/" + facility_id;
+            }
+          })
+          .catch(function (error) {
+            console.error(error);
+            alert("비밀번호를 잘못 입력하셨습니다.");
+            closeModal();
+            window.location.href = "/facility/" + facility_id;
+          });
+      }
+
+      function closeModal() {
+        $("#deletionModal").modal("hide");
+      }
+    </script>
+  </body>
+</html>
