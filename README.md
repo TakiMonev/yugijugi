@@ -11,8 +11,8 @@
     - 댓글 : 생성, 수정, 삭제
     - ERD :
     
-    ![그림01.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/5026309b-ee0e-4453-a1e5-d20064c6aa5d/%EA%B7%B8%EB%A6%BC01.jpg)
-    
+ ![image](https://github.com/TakiMonev/yugijugi/assets/61460821/1e260155-bd01-43c8-88d0-5598fd2f4bc5)
+
     ## 2. 트러블 슈팅
     
     ### 2 - 1) th:onclick이 되지 않는 현상
