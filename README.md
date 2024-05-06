@@ -23,15 +23,16 @@
     
     **해결 방법 : th:onclick="|location.href='/theme/${theme.id}'|"와 같이 ‘|’를 이용한다**
     
-    ![그림02.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/b3d82643-f047-466b-b91f-d293ac1f5b9b/%EA%B7%B8%EB%A6%BC02.jpg)
-    
+![image](https://github.com/TakiMonev/yugijugi/assets/61460821/f9a036e9-04e4-4dad-987f-3856e7396c79)
+
     ### 2 - 2) Controller에서 JSON을 못가져오는 현상
     
     **문제 :** **JS에서는 JSON에 접근하기 쉬웠는데 Java에서는 어떻게 접근해야 할지 몰랐다.**
     
     **해결 방법 : 객체를 정의하고 그 객체를 @RequestBody로 받아온다.**
     
-    ![그림03.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/5b0c2f46-bce6-4242-8e75-61827525c231/%EA%B7%B8%EB%A6%BC03.jpg)
+![image](https://github.com/TakiMonev/yugijugi/assets/61460821/df7d4d1e-daf9-487d-b5d1-1d3711990367)
+
     
     ## 3. 경험 공유
     
@@ -49,41 +50,3 @@
     2. **프론트 부분에서 시간이 오래 걸렸는데 앞으로는 더 잘할 수 있을 것 같다.**
     3. **프론트와 백 둘 다 정해진 기간 내에 하다보니 굉장히 유익했다.**
     
-    ## 4. 영상
-    
-    ### 4 - 1) 게시판
-    
-- 생성
-    
-    [테마생성.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/857b9be9-f222-4952-92bf-a137add189b7/%ED%85%8C%EB%A7%88%EC%83%9D%EC%84%B1.mp4)
-    
-
-- 삭제
-    
-    [테마 삭제.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/166b8340-8a32-4260-a74b-3527fcae7e1a/%ED%85%8C%EB%A7%88_%EC%82%AD%EC%A0%9C.mp4)
-    
-
-### 4 - 2) 게시글
-
-- 생성
-    
-    [게시글 생성.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/c05c3887-0cb3-4e47-8c22-e39ca4b62c46/%EA%B2%8C%EC%8B%9C%EA%B8%80_%EC%83%9D%EC%84%B1.mp4)
-    
-
-- 수정
-
-[Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/a5544668-0a6e-436a-b6dd-f1771ba8efc2/Untitled.mp4)
-
-- 삭제
-
-[Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/97ea707a-b236-4254-b4c0-242113a3ed6b/Untitled.mp4)
-
-### 4 - 3) 댓글 및 지역별 안내
-
-- 댓글
-
-[댓글.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/307f307f-e1bb-4540-828f-590ae42f3170/%EB%8C%93%EA%B8%80.mp4)
-
-- 지역별
-    
-    [지역별 안내.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/d85fd78d-de88-4966-9b27-62e3e2e8c2a0/0390e5ef-ec58-411c-8056-8a5567b29d44/%EC%A7%80%EC%97%AD%EB%B3%84_%EC%95%88%EB%82%B4.mp4)
